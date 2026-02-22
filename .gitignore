@@ -1,0 +1,17 @@
+# Entornos virtuales
+venv/
+env/
+.env/
+
+# Cache de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Archivos de Excel temporales (opcional)
+~$*.xlsx
+
+# Archivos de configuración de editores
+.vscode/
+.idea/
