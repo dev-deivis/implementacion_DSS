@@ -1,5 +1,4 @@
 # Simulación Monte Carlo
-# ============================================================
 
 import numpy as np
 
