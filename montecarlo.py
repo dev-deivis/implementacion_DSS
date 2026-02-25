@@ -46,41 +46,38 @@ def simular_alternativa(alternativa: dict,
                         pesos_normalizados: dict,
                         rangos_globales: dict,
                         iteraciones: int = 10000) -> list:
-    scores = []
 
-    for _ in range(iteraciones):
-        score_iteracion = 0.0
+    # Crear vector de scores en cero
+    scores = np.zeros(iteraciones)
 
-        for criterio in criterios:
-            nombre  = criterio['Criterio']
-            col_min = f"{nombre}_Min"
-            col_max = f"{nombre}_Max"
+    for criterio in criterios:
+        nombre  = criterio['Criterio']
+        col_min = f"{nombre}_Min"
+        col_max = f"{nombre}_Max"
 
-            # Rango de esta alternativa
-            val_min = alternativa[col_min]
-            val_max = alternativa[col_max]
+        val_min = alternativa[col_min]
+        val_max = alternativa[col_max]
 
-            # Rango global del criterio
-            min_global = rangos_globales[nombre]["min"]
-            max_global = rangos_globales[nombre]["max"]
-            tipo       = rangos_globales[nombre]["tipo"]
+        min_global = rangos_globales[nombre]["min"]
+        max_global = rangos_globales[nombre]["max"]
+        tipo       = rangos_globales[nombre]["tipo"]
 
-            # 1. Valor aleatorio dentro del rango
-            valor_simulado = np.random.uniform(val_min, val_max)
+        # Generar TODOS los valores de una vez
+        valores = np.random.uniform(val_min, val_max, iteraciones)
 
-            # 2. Normalizar
-            valor_norm = normalizar_valor(
-                valor_simulado, min_global, max_global, tipo
-            )
+        # Normalización vectorizada
+        if max_global == min_global:
+            valores_norm = np.full(iteraciones, 0.5)
+        elif tipo.lower() == "minimizar":
+            valores_norm = (max_global - valores) / (max_global - min_global)
+        else:
+            valores_norm = (valores - min_global) / (max_global - min_global)
 
-            # 3. Acumular score ponderado
-            peso = pesos_normalizados[nombre]
-            score_iteracion += peso * valor_norm
+        # Acumular ponderación
+        peso = pesos_normalizados[nombre]
+        scores += peso * valores_norm
 
-        scores.append(score_iteracion)
-
-    return scores
-
+    return scores.tolist()
 
 # Calcular estadísticas de los scores
 def calcular_estadisticas(scores: list) -> dict:
