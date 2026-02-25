@@ -137,7 +137,7 @@ if __name__ == "__main__":
         ganador_mc = resultado_mc['ganador']
         stats_mc = resultado_mc['resultados']
         
-        # 4. PROBAR TU MÓDULO (Persona 6)
+        # 4. PROBAR TU MÓDULO
         print("\n[1] TEXTO DE RECOMENDACIÓN:")
         print("-" * 40)
         print(generar_recomendacion(ganador_ahp, ganador_mc, nombre_decision))
@@ -156,7 +156,7 @@ if __name__ == "__main__":
         print(generar_tabla_resumen(ranking_ahp, stats_mc).to_string(index=False))
         
         print("\n" + "=" * 60)
-        print("✅ Todo funciona correctamente y está integrado.")
+        print("Todo funciona correctamente y está integrado.")
         
     except FileNotFoundError:
         print("[!] No se encontró el archivo plantilla.xlsx. Asegúrate de que esté en la misma carpeta.")
